@@ -1,8 +1,9 @@
+#vim set noet
 CFLAGS := -Wall -std=c99
 
-phonebook_test: phonebook_test.o
-
-test: phonebook_test
+	
+test: phonebook_test.o phonebook.o
+	$(CC) -o phonebook_test phonebook_test.o phonebook.o
 	./phonebook_test
 
 clean:

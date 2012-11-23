@@ -1,68 +1,9 @@
+#include "phonebook.h"
+
 #include <assert.h>
 #include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <limits.h>
-#include <inttypes.h>
 #include <string.h>
 
-#define MAX_NAME_LEN 15
-#define MAX_ENTRIES 30
-#define number_t uint32_t
-
-typedef
-struct entry
-{
-    number_t number;
-    char name[MAX_NAME_LEN];
-} entry;
-
-typedef
-struct phonebook
-{
-    unsigned int size;
-    entry entries[MAX_ENTRIES];
-} phonebook;
-
-typedef
-enum { RES_OK, RES_PHONEBOOK_FULL, RES_NAME_TOO_LONG } result_t;
-
-phonebook create_phonebook()
-{
-    phonebook book;
-    book.size = 0;
-    return book;
-}
-
-result_t add(phonebook* phonebook, number_t number, const char* name)
-{
-    if (MAX_ENTRIES <= phonebook->size)
-    {
-        return RES_PHONEBOOK_FULL;
-    }
-    if (strlen(name) > MAX_NAME_LEN)
-    {
-        return RES_NAME_TOO_LONG;
-    }
-    entry ent;
-    ent.number = number;
-    strcpy(ent.name, name);
-    phonebook->entries[phonebook->size] = ent;
-    phonebook->size++;
-    return RES_OK;
-}
-
-entry* get(phonebook* phonebook, number_t number)
-{
-    for (size_t i = 0; i < phonebook->size; ++i)
-    {
-        if (phonebook->entries[i].number == number)
-        {
-            return &phonebook->entries[i];
-        }
-    }
-    return NULL;
-}
 
 void assertStrEquals(const char* s1, const char* s2)
 {
