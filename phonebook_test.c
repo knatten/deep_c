@@ -70,27 +70,25 @@ void entries_can_be_looked_up_by_number()
 {
     phonebook book = book_with_two_entries();
 
-    entry* anders = getByNumber(&book, 922);
+    const char* anders = getByNumber(&book, 922);
     assert(anders && "Expected to not get null when looking up a known entry");
-    assertStrEquals("Anders", anders->name);
-    assertEquals(922, anders->number);
+    assertStrEquals("Anders", anders);
 }
 
 void entries_can_be_looked_up_by_name()
 {
     phonebook book = book_with_two_entries();
 
-    entry* anders = getByName(&book, "Anders");
-    assert(anders && "Expected to not get null when looking up a known entry");
-    assertStrEquals("Anders", anders->name);
-    assertEquals(922, anders->number);
+    number_t anders = getByName(&book, "Anders");
+    assert(anders != -1 && "Expected to not get null when looking up a known entry");
+    assertEquals(922, anders);
 }
 
 void non_existing_entries_return_null()
 {
     phonebook book = book_with_two_entries();
     assert(getByNumber(&book, 42) == NULL);
-    assert(getByName(&book, "Bob") == NULL);
+    assert(getByName(&book, "Bob") == -1);
 }
 
 int main(void)

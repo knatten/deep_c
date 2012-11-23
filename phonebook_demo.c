@@ -7,15 +7,22 @@ int main(void)
 	phonebook book = create_phonebook();
 	add(&book, 922, "Anders");
 
-	entry* e1 = getByNumber(&book, 922);
-	printf("The owner of number 922 is %s\n",  e1->name);
+	const char* name = getByNumber(&book, 922);
+	printf("The owner of number 922 is %s\n",  name);
 
-	entry* e2 = getByName(&book, "Anders");
-	printf("Anders' number is %d\n", e2->number);
+	number_t number = getByName(&book, "Anders");
+	printf("Anders' number is %d\n", number);
 
-	entry* error = getByNumber(&book, 1337);
-	if (error == NULL)
+	const char* errorName = getByNumber(&book, 1337);
+	if (errorName == NULL)
 	{
-		printf("No one has number 1337");
+		printf("No one has number 1337\n");
 	}
+
+	number_t errorNumber = getByName(&book, "Charlotte");
+	if (errorNumber == -1)
+	{
+		printf("Charlotte is not in the phonebook\n");
+	}
+
 }
