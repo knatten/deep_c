@@ -26,6 +26,7 @@ enum { RES_OK, RES_PHONEBOOK_FULL, RES_NAME_TOO_LONG } result_t;
 
 phonebook create_phonebook();
 result_t add(phonebook* phonebook, number_t number, const char* name);
-entry* get(phonebook* phonebook, number_t number);
+entry* getByNumber(phonebook* phonebook, number_t number);
+entry* getByName(phonebook* phonebook, const char* name);
 
 #endif

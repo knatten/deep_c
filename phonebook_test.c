@@ -56,15 +56,31 @@ void adding_is_not_allowed_if_name_is_too_long()
     assert(result == RES_NAME_TOO_LONG);
 }
 
-void entries_can_be_looked_up_by_number()
+phonebook book_with_two_entries()
 {
     phonebook book = create_phonebook();
     result_t result = add(&book, 909, "Charlotte");
     assert(result == RES_OK);
     result = add(&book, 922, "Anders");
     assert(result == RES_OK);
+    return book;
+}
 
-    entry* anders = get(&book, 922);
+void entries_can_be_looked_up_by_number()
+{
+    phonebook book = book_with_two_entries();
+
+    entry* anders = getByNumber(&book, 922);
+    assert(anders && "Expected to not get null when looking up a known entry");
+    assertStrEquals("Anders", anders->name);
+    assertEquals(922, anders->number);
+}
+
+void entries_can_be_looked_up_by_name()
+{
+    phonebook book = book_with_two_entries();
+
+    entry* anders = getByName(&book, "Anders");
     assert(anders && "Expected to not get null when looking up a known entry");
     assertStrEquals("Anders", anders->name);
     assertEquals(922, anders->number);
@@ -72,9 +88,9 @@ void entries_can_be_looked_up_by_number()
 
 void non_existing_entries_return_null()
 {
-    phonebook book = create_phonebook();
-    entry* entr = get(&book, 42);
-    assert(entr == NULL);
+    phonebook book = book_with_two_entries();
+    assert(getByNumber(&book, 42) == NULL);
+    assert(getByName(&book, "Bob") == NULL);
 }
 
 int main(void)
@@ -84,6 +100,7 @@ int main(void)
     adding_is_allowed_until_book_is_full();
     adding_is_not_allowed_if_name_is_too_long();
     entries_can_be_looked_up_by_number();
+    entries_can_be_looked_up_by_name();
     non_existing_entries_return_null();
     printf("All tests passed\n");
     return 0;

@@ -27,11 +27,23 @@ result_t add(phonebook* phonebook, number_t number, const char* name)
     return RES_OK;
 }
 
-entry* get(phonebook* phonebook, number_t number)
+entry* getByNumber(phonebook* phonebook, number_t number)
 {
     for (size_t i = 0; i < phonebook->size; ++i)
     {
         if (phonebook->entries[i].number == number)
+        {
+            return &phonebook->entries[i];
+        }
+    }
+    return NULL;
+}
+
+entry* getByName(phonebook* phonebook, const char* name)
+{
+    for (size_t i = 0; i < phonebook->size; ++i)
+    {
+        if (!strcmp(phonebook->entries[i].name, name))
         {
             return &phonebook->entries[i];
         }
