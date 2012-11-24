@@ -25,4 +25,9 @@ int main(void)
 		printf("Charlotte is not in the phonebook\n");
 	}
 
+	add(&book, 977, "Morten");
+
+	printf("The contents of the phonebook are:\n");
+	print(&book);
+
 }

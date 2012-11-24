@@ -28,5 +28,6 @@ phonebook create_phonebook();
 result_t add(phonebook* phonebook, number_t number, const char* name);
 const char* getByNumber(phonebook* phonebook, number_t number);
 number_t getByName(phonebook* phonebook, const char* name);
+void print(phonebook* phonebook);
 
 #endif

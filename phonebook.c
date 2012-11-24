@@ -1,6 +1,7 @@
 #include "phonebook.h"
 
 #include <string.h>
+#include <stdio.h>
 
 phonebook create_phonebook()
 {
@@ -31,9 +32,10 @@ const char* getByNumber(phonebook* phonebook, number_t number)
 {
     for (size_t i = 0; i < phonebook->size; ++i)
     {
-        if (phonebook->entries[i].number == number)
+        entry* entr = &phonebook->entries[i];
+        if (entr->number == number)
         {
-            return phonebook->entries[i].name;
+            return entr->name;
         }
     }
     return NULL;
@@ -43,10 +45,21 @@ number_t getByName(phonebook* phonebook, const char* name)
 {
     for (size_t i = 0; i < phonebook->size; ++i)
     {
-        if (!strcmp(phonebook->entries[i].name, name))
+        entry* entr = &phonebook->entries[i];
+        if (!strcmp(entr->name, name))
         {
-            return phonebook->entries[i].number;
+            return entr->number;
         }
     }
     return -1;
+}
+
+void print(phonebook* phonebook)
+{
+    for (size_t i = 0; i < phonebook->size; ++i)
+    {
+        entry* entr = &phonebook->entries[i];
+        printf("%s: %d\n", entr->name, entr->number);
+    }
+    
 }
