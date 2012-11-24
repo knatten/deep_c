@@ -18,6 +18,28 @@ size_t indexByNumber(phonebook* phonebook, number_t number)
     return SIZE_MAX;
 }
 
+size_t indexByName(phonebook* phonebook, const char* name)
+{
+    for (size_t i = 0; i < phonebook->size; ++i)
+    {
+        entry* entr = &phonebook->entries[i];
+        if (!strcmp(entr->name, name))
+        {
+            return i;
+        }
+    }
+    return SIZE_MAX;
+}
+
+void deleteByIndex(phonebook* phonebook, size_t index)
+{
+    for (size_t i = index; i < phonebook->size-1; ++i)
+    {
+        phonebook->entries[i] = phonebook->entries[i+1];
+    }
+    phonebook->size--;
+}
+
 phonebook create_phonebook()
 {
     phonebook book;
@@ -50,11 +72,18 @@ result_t deleteByNumber(phonebook* phonebook, number_t number)
     {
         return RES_NOT_FOUND;
     }
-    for (size_t i = index; i < phonebook->size-1; ++i)
+    deleteByIndex(phonebook, index);
+    return RES_OK;
+}
+
+result_t deleteByName(phonebook* phonebook, const char* name)
+{
+    size_t index = indexByName(phonebook, name);
+    if (index == SIZE_MAX)
     {
-        phonebook->entries[i] = phonebook->entries[i+1];
+        return RES_NOT_FOUND;
     }
-    phonebook->size--;
+    deleteByIndex(phonebook, index);
     return RES_OK;
 }
 
@@ -70,15 +99,12 @@ const char* getByNumber(phonebook* phonebook, number_t number)
 
 number_t getByName(phonebook* phonebook, const char* name)
 {
-    for (size_t i = 0; i < phonebook->size; ++i)
+    size_t index = indexByName(phonebook, name);
+    if (index == SIZE_MAX)
     {
-        entry* entr = &phonebook->entries[i];
-        if (!strcmp(entr->name, name))
-        {
-            return entr->number;
-        }
+        return -1;
     }
-    return -1;
+    return phonebook->entries[index].number;
 }
 
 void print(phonebook* phonebook)

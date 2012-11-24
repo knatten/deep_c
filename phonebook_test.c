@@ -91,7 +91,7 @@ void non_existing_entries_return_null()
     assert(getByName(&book, "Bob") == -1);
 }
 
-void when_deleting_an_entry_it_is_no_longer_there()
+void when_deleting_an_entry_by_number_it_is_no_longer_there()
 {
     phonebook book = book_with_two_entries();
     assert(deleteByNumber(&book, 922) == RES_OK);
@@ -100,10 +100,25 @@ void when_deleting_an_entry_it_is_no_longer_there()
     assertStrEquals(getByNumber(&book, 909), "Charlotte");
 }
 
-void when_deleting_a_non_existing_entry_an_error_is_returned()
+void when_deleting_an_entry_by_name_it_is_no_longer_there()
+{
+    phonebook book = book_with_two_entries();
+    assert(deleteByName(&book, "Anders") == RES_OK);
+    assert(getByName(&book, "Anders") == -1 && "Expected 922 Anders to have been deleted"); 
+    assert(book.size == 1 && "Expected size to decrement");
+    assert(getByName(&book, "Charlotte") == 909);
+}
+
+void when_deleting_a_non_existing_entry_by_number_an_error_is_returned()
 {
     phonebook book = book_with_two_entries();
     assert(deleteByNumber(&book, 123) == RES_NOT_FOUND);
+}
+
+void when_deleting_a_non_existing_entry_by_name_an_error_is_returned()
+{
+    phonebook book = book_with_two_entries();
+    assert(deleteByName(&book, "Bob") == RES_NOT_FOUND);
 }
 
 int main(void)
@@ -115,8 +130,10 @@ int main(void)
     entries_can_be_looked_up_by_number();
     entries_can_be_looked_up_by_name();
     non_existing_entries_return_null();
-    when_deleting_an_entry_it_is_no_longer_there();
-    when_deleting_a_non_existing_entry_an_error_is_returned();
+    when_deleting_an_entry_by_number_it_is_no_longer_there();
+    when_deleting_a_non_existing_entry_by_number_an_error_is_returned();
+    when_deleting_an_entry_by_name_it_is_no_longer_there();
+    when_deleting_a_non_existing_entry_by_name_an_error_is_returned();
     printf("All tests passed\n");
     return 0;
 }
