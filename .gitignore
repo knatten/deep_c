@@ -3,3 +3,4 @@
 phonebook_test
 *.lib
 phonebook_demo
+*.a
