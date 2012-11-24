@@ -1,5 +1,5 @@
 This is my code for @olvemaudal's Deep C course. It was written in a hurry.
 
 TODO:
-List all entries in the phone book
-Add interface to remove entries
+Better error handling
+Consider using a linked list for implementation to improve speed (avoid moving entries after delete)
