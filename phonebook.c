@@ -2,6 +2,21 @@
 
 #include <string.h>
 #include <stdio.h>
+#include <limits.h>
+
+
+size_t indexByNumber(phonebook* phonebook, number_t number)
+{
+    for (size_t i = 0; i < phonebook->size; ++i)
+    {
+        entry* entr = &phonebook->entries[i];
+        if (entr->number == number)
+        {
+            return i;
+        }
+    }
+    return SIZE_MAX;
+}
 
 phonebook create_phonebook()
 {
@@ -28,17 +43,29 @@ result_t add(phonebook* phonebook, number_t number, const char* name)
     return RES_OK;
 }
 
+result_t deleteByNumber(phonebook* phonebook, number_t number)
+{
+    size_t index = indexByNumber(phonebook, number);
+    if (index == SIZE_MAX)
+    {
+        return RES_NOT_FOUND;
+    }
+    for (size_t i = index; i < phonebook->size-1; ++i)
+    {
+        phonebook->entries[i] = phonebook->entries[i+1];
+    }
+    phonebook->size--;
+    return RES_OK;
+}
+
 const char* getByNumber(phonebook* phonebook, number_t number)
 {
-    for (size_t i = 0; i < phonebook->size; ++i)
+    size_t index = indexByNumber(phonebook, number);
+    if (index == SIZE_MAX)
     {
-        entry* entr = &phonebook->entries[i];
-        if (entr->number == number)
-        {
-            return entr->name;
-        }
+        return NULL;
     }
-    return NULL;
+    return phonebook->entries[index].name;
 }
 
 number_t getByName(phonebook* phonebook, const char* name)

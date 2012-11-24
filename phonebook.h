@@ -22,10 +22,11 @@ struct phonebook
 } phonebook;
 
 typedef
-enum { RES_OK, RES_PHONEBOOK_FULL, RES_NAME_TOO_LONG } result_t;
+enum { RES_OK, RES_PHONEBOOK_FULL, RES_NAME_TOO_LONG, RES_NOT_FOUND } result_t;
 
 phonebook create_phonebook();
 result_t add(phonebook* phonebook, number_t number, const char* name);
+result_t deleteByNumber(phonebook* phonebook, number_t number);
 const char* getByNumber(phonebook* phonebook, number_t number);
 number_t getByName(phonebook* phonebook, const char* name);
 void print(phonebook* phonebook);
