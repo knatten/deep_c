@@ -49,7 +49,7 @@ phonebook create_phonebook()
 
 result_t add(phonebook* phonebook, number_t number, const char* name)
 {
-    if (MAX_ENTRIES <= phonebook->size)
+    if (phonebook->size >= MAX_ENTRIES)
     {
         return RES_PHONEBOOK_FULL;
     }
@@ -57,10 +57,9 @@ result_t add(phonebook* phonebook, number_t number, const char* name)
     {
         return RES_NAME_TOO_LONG;
     }
-    entry ent;
-    ent.number = number;
-    strcpy(ent.name, name);
-    phonebook->entries[phonebook->size] = ent;
+    entry* ent = &phonebook->entries[phonebook->size];
+    ent->number = number;
+    strcpy(ent->name, name);
     phonebook->size++;
     return RES_OK;
 }

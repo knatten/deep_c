@@ -2,6 +2,7 @@
 #define PHONEBOOK_H
 
 #include <inttypes.h>
+#include <stddef.h>
 
 #define MAX_NAME_LEN 15
 #define MAX_ENTRIES 30
@@ -17,7 +18,7 @@ struct entry
 typedef
 struct phonebook
 {
-    unsigned int size;
+    size_t size;
     entry entries[MAX_ENTRIES];
 } phonebook;
 
