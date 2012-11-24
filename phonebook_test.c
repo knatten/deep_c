@@ -5,13 +5,22 @@
 #include <string.h>
 
 
-void assertStrEquals(const char* s1, const char* s2)
+void assertStrEqualsMsg(const char* s1, const char* s2, const char* msg)
 {
     if (strcmp(s1, s2))
     {
+        if (msg)
+        {
+            printf("%s\n", msg);
+        }
         printf("Strings are not equal:\ns1:%s\ns2:%s\n", s1, s2);
         assert(0);
     }
+}
+
+void assertStrEquals(const char* s1, const char* s2)
+{
+    assertStrEqualsMsg(s1, s2, NULL);
 }
 
 void assertEquals(int i1, int i2)
@@ -80,11 +89,11 @@ void entries_can_be_looked_up_by_name()
     phonebook book = book_with_two_entries();
 
     number_t anders = getByName(&book, "Anders");
-    assert(anders != -1 && "Expected to not get null when looking up a known entry");
+    assert(anders != -1 && "Expected to not get -1 when looking up a known entry");
     assertEquals(922, anders);
 }
 
-void non_existing_entries_return_null()
+void non_existing_entries_return_null_or_minus_1()
 {
     phonebook book = book_with_two_entries();
     assert(getByNumber(&book, 42) == NULL);
@@ -97,7 +106,7 @@ void when_deleting_an_entry_by_number_it_is_no_longer_there()
     assert(deleteByNumber(&book, 922) == RES_OK);
     assert(getByNumber(&book, 922) == NULL && "Expected 922 Anders to have been deleted"); 
     assert(book.size == 1 && "Expected size to decrement");
-    assertStrEquals(getByNumber(&book, 909), "Charlotte");
+    assertStrEqualsMsg(getByNumber(&book, 909), "Charlotte", "Expected other items to still be present");
 }
 
 void when_deleting_an_entry_by_name_it_is_no_longer_there()
@@ -106,7 +115,7 @@ void when_deleting_an_entry_by_name_it_is_no_longer_there()
     assert(deleteByName(&book, "Anders") == RES_OK);
     assert(getByName(&book, "Anders") == -1 && "Expected 922 Anders to have been deleted"); 
     assert(book.size == 1 && "Expected size to decrement");
-    assert(getByName(&book, "Charlotte") == 909);
+    assert(getByName(&book, "Charlotte") == 909 && "Expected other items to still be present");
 }
 
 void when_deleting_a_non_existing_entry_by_number_an_error_is_returned()
@@ -129,7 +138,7 @@ int main(void)
     adding_is_not_allowed_if_name_is_too_long();
     entries_can_be_looked_up_by_number();
     entries_can_be_looked_up_by_name();
-    non_existing_entries_return_null();
+    non_existing_entries_return_null_or_minus_1();
     when_deleting_an_entry_by_number_it_is_no_longer_there();
     when_deleting_a_non_existing_entry_by_number_an_error_is_returned();
     when_deleting_an_entry_by_name_it_is_no_longer_there();
